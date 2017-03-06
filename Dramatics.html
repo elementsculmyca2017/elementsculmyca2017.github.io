@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-92562312-1', 'auto');
+		ga('send', 'pageview');
+
+	</script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Elements Culmyca | 2017 </title>
+	<!--All stylesheets-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+	<link href="css/main.min.css" rel="stylesheet">	
+	<link href="css/responsive.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="slick/slick.min.css">
+	<link rel="stylesheet" type="text/css" href="slick/slick-theme.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+	<!-- for Google -->
+	<meta name="description" content="Annual Cultural Cum Technical Fest Of YMCA University Of Science And Technology, Faridabad" />
+	<meta name="keywords" content="college,fest,elements,culmyca,ymca,2017" />
+	<meta name="author" content="Manan" />
+	<meta name="copyright" content="vipinkhushu@hotmail.com" />
+	<meta name="application-name" content="Culmyca17" />
+	<!-- for Facebook -->
+	<meta property="og:url"                content="http://www.elementsculmyca.com/" />
+	<meta property="og:type"               content="article" />
+	<meta property="og:title"              content="Elements Culmyca 2017" />
+	<meta property="og:description"        content="Annual Cultural Cum Technical Fest Of YMCA University Of Science And Technology, Faridabad" />
+	<meta property="og:image"              content="http://www.elementsculmyca.com/images/facebook-cover.png" />
+	<meta property="og:site_name"          content="Culmyca17" />
+	<meta property="fb:app_id"             content="" />
+	<!-- for Twitter -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="Elements Culmyca 2017" />
+	<meta name="twitter:description" content="Annual Cultural Cum Technical Fest Of YMCA University Of Science And Technology, Faridabad" />
+	<meta name="twitter:image" content="http://www.elementsculmyca.com/images/logo.png" />
+	<link rel="apple-touch-icon" href="images/logo.png">
+	<link rel="icon" href="images/logo.png">
+	<!--FAVICON-->
+	<link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
+	<style type="text/css">
+		body:before {
+			content: "";
+			display: block;
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			z-index: -10;
+			background: url('images/23.jpg') no-repeat center center;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+	</style>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		window.onload=function(){
+
+			$("#phoneno").val('');
+			$('#fullname').val('');
+			$('#college').val('');
+			$('#email').val('');
+			$('#paymenttxnid').val('');
+			$('#paymentphoneno').val('');
+			$.ajax({
+
+				type: "GET",
+				crossDomain: true,
+				dataType: 'json',
+				url: "https://elementsculmyca2017.herokuapp.com/api/v1/eventlist/category/Dramatics"
+            //data: {username:username,password:password}
+   //success: function() { $('body').css('display', 'block');}
+    //error: function() { alert('Failed!'); }
+
+}).done(function(data){
+	$("#wait2").css("display","none");
+
+
+	var events=JSON.parse(JSON.stringify(data));
+	var eve="";
+
+	for(var i=0; i<events.length; i++)
+	{
+		var f=events[i].fee;
+		if(f=="0")
+		var fe="FREE";
+		else
+		{
+			var fe=f;
+		}
+		var type;
+		if(events[i].type=='individual')
+			type='person';
+		else if(events[i].type=='team')
+			type='team';
+		else 
+			type='presentation';
+
+
+		eve+='<div class="container" style="width: 100%;padding-bottom: 2%;"><div class="col-md-4"><h1>';
+		eve+=events[i].startTime+' To '+events[i].endTime+'<br />'+events[i].venue;
+		eve+='</h1></div><div class="col-md-4" style="text-align: center;"><h1 style="font-size: 60px;">'+events[i].eventName+'</h1></div><div class="col-md-4">';
+		if(type!='presentation')
+		{eve+='<h1>Fees:- '+fe;
+		if(fe!="FREE")
+		{
+			eve+=' per '+type;
+		}
+		}
+		eve+='</h1></div></div><div class="container" style="width: 100%;padding-bottom: 2%"><div class="col-md-4"><img src="images/eventpics/'+events[i].eventName+'.jpg" class="img-responsive"></div><div class="col-md-4">'+events[i].description+'</div><div class="col-md-4">Rules:<br>'+events[i].rules+'</div></div><div class="container"><div class="col-md-12">';
+		if(type!='presentation')
+		{if(type=='team')
+			eve+='<button class="register-button"  data-toggle="modal" data-target="#myModal" data-id="'+events[i]._id+'" data-whatever="This is a team event. Enter the name of all your team members seperated by comma.">Register</button>';
+			else 
+			eve+='<button class="register-button"  data-toggle="modal" data-target="#myModal" data-id="'+events[i]._id+'" data-whatever="">Register</button>';
+		}
+		eve+='</div></div><hr style="margin-left: -10%;width:112%">';
+
+
+	}   
+
+	document.getElementById("data").innerHTML=eve;      
+	$(".preloader").css("display","none");
+
+})
+$(document).on("click", ".register-button", function () {
+	var eventId = $(this).data('id');
+	$("#eventid").val(eventId );
+     // As pointed out in comments, 
+     // it is superfluous to have to manually call the modal.
+     // $('#addBookDialog').modal('show');
+ });
+
+}
+
+function testphone(phone)
+{if(isNaN(phone))
+	alert("Enter Phone No");
+	else if(phone.length===10)
+		{$("#wait1").css("display","block");
+
+	$.ajax({
+
+		type: "GET",
+		crossDomain: true,
+		dataType: 'json',
+		url: "https://elementsculmyca2017.herokuapp.com/api/v1/userinfo/"+phone
+    //success: function() { alert("Success"); },
+    //error: function() { alert('Failed!'); }
+
+}).done(function(data){
+	$("#wait1").css("display","none");
+	data=jQuery.makeArray(data);
+	obj=JSON.parse(JSON.stringify(data));
+	if(obj[0].message=='user doesnot exist')
+	{
+		//alert("The user does not already exist");
+	}
+	else
+		{var email=obj[0].email;
+			var fullname=obj[0].fullname;
+			var college=obj[0].college;
+			$("#email").val(email);
+			$("#fullname").val(fullname);
+			$("#college").val(college);
+		}
+
+	})
+}
+}
+
+
+function create()
+{
+ 
+
+	var phoneno=$("#phoneno").val();
+	var email= $("#email").val();
+	var fullname= $("#fullname").val();
+	var college = $("#college").val();
+	var paymenttxnid=$("#paymenttxnid").val();
+	var paymentphoneno= $("#paymentphoneno").val();
+	if(paymenttxnid=='')
+		paymenttxnid='cash';
+
+
+	var eventid=$('#eventid').val();
+  var letters = /^[a-zA-Z\s]*$/; 
+   if(fullname.match(letters))
+   {
+   		var fn="valid";
+   }
+   else 
+   {
+   	    var fn="notvalid";
+   }
+   if(college.match(letters))
+   {
+   		var cl="valid";
+   }
+   else 
+   {
+   	    var cl="notvalid";
+   }
+   if(isNaN(phoneno))
+   {
+   	var pp="notvalid";
+   }
+   else
+   {
+   	var pp="valid";
+   }
+	var atpos = email.indexOf("@");
+	var dotpos = email.lastIndexOf(".");
+
+if(phoneno!='' && email!='' && fullname!='' && college!='' && atpos>=1 && dotpos>=atpos+2 && dotpos+2<email.length && phoneno.length>=10 && fullname.length<=30 && fn=="valid" && pp=="valid" && cl=="valid")
+	{ 
+
+		$("#wait2").css("display","block");
+
+		$.ajax({
+
+			type: "POST",
+			crossDomain: true,
+			dataType: 'json',
+			url: "https://elementsculmyca2017.herokuapp.com/api/v1/register/",
+			data: {phoneno:phoneno,email:email,fullname:fullname,college:college,eventid:eventid,paymenttxnid:paymenttxnid,paymentphoneno:paymentphoneno}
+
+           //success: function() { alert("Success"); },
+           //error: function() { alert('Failed!'); }
+
+
+       }).done(function(data){
+
+       	var obj=JSON.stringify(data);
+
+       	if(obj[12]=='u')
+       	{
+       		$("#wait2").css("display","none");  
+       		$('#myModal').modal('hide');
+       		$('#myModal2').modal('toggle'); 
+       	}
+       	else
+       	{
+       		$("#wait2").css("display","none");  
+       		$('#myModal').modal('hide');
+       		$('#myModal1').modal('toggle'); 
+       	} 
+       	ok();
+
+
+       })
+
+   }
+   else
+   {
+   	if(phoneno=='' || email=='' || fullname=='' || college=='')
+   	{
+   		document.getElementById("wr").innerHTML="Fill all the fields!!";   
+   		$(".alert").css("display","block");  
+	}
+	else if(phoneno.length<10 || pp=="notvalid")
+	{
+		document.getElementById("wr").innerHTML="Enter Valid Phone No.!!";   
+   		$(".alert").css("display","block");  
+	}
+	else if(fullname.length>30 || fn=="notvalid")
+	{
+		document.getElementById("wr").innerHTML="Enter Valid Full Name!!";   
+   		$(".alert").css("display","block");  
+	}
+	else if(cl=="notvalid")
+	{
+		document.getElementById("wr").innerHTML="Enter Valid College Name!!";   
+   		$(".alert").css("display","block");  
+	}
+   	else if(atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length)
+   	{
+   		document.getElementById("wr").innerHTML="Enter Valid Email id!!";   
+   		$(".alert").css("display","block");  
+   	}
+   
+   	
+   }
+
+
+}
+
+
+function ok()
+{
+	$("#phoneno").val('');
+	$('#fullname').val('');
+	$('#college').val('');
+	$('#email').val('');
+	$('#paymenttxnid').val('');
+	$('#paymentphoneno').val('');
+	$(".alert").css("display","none"); 
+
+
+}
+
+
+
+
+</script>
+<style type="text/css">
+	.preloader {
+	    
+	    background-color:#000;
+	    position:fixed;
+	    width:100%;
+	    height:100%;
+	    top:0px;
+	    left:0px;
+	    z-index:1000;
+	}
+	.preloader_image{
+		  border:1px solid #dedede;
+          background-color: #fff;
+          border-radius: 8px;
+          margin: 0 auto;
+          padding: 30px;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+	}
+	.err-label{
+		color: #000;
+        display: block;
+        margin:0 auto;
+        padding: 7px;
+        border-radius: 4px;
+	}
+
+</style>
+
+
+</head>
+<div class="preloader" style="text-align: center;">
+	<div class="preloader_image">
+	<center>
+	<img src="loader.gif" alt="Preloader image">
+	</center>
+		<span class="err-label">Loading Events...</span>
+
+	</div>
+	<br/>
+</div>
+
+<body style="width: 100%;background-color: #428bca;overflow-x:hidden;">
+	
+	<header id="header" role="banner">		
+		<div class="main-nav">
+			<div class="container">
+				<div class="header-top">
+					<div class="pull-right social-icons">
+							<a href="https://facebook.com/culmyca"><i class="fa fa-facebook"></i></a>
+							<a href="https://twitter.com/elementsculmyca"><i class="fa fa-twitter"></i></a>
+							<a href="https://instagram.com/elementsculmyca"><i class="fa fa-instagram"></i></a>
+					</div>
+				</div>     
+				<div class="row">	        		
+					<div class="navbar-header" style="transform:translateX(-400px);transition: all .5s">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="index.html">
+							<img class="img-responsive" src="images/logo.png" alt="logo">
+							<div style="text-align: right;color: white;margin-right: 10px;">
+								<h2 style="margin-top:10px;" class="event-nav">Dramatics</h2>
+							</div>
+						</a>                    
+					</div>
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right" style="transform:translateX(600px);transition: all .5s">                 
+							<li class="scroll"><a href="index.html" onclick="location.replace('index.html'),'_top'">Home</a></li>                       
+							<li class="scroll active"><a href="#events">Dramatics Events</a></li>
+							<li class="scroll"><a href="index.html#contact">Sponsors</a></li>        
+							<li class="scroll"><a href="team.html">The Team</a></li>       
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>                    
+	</header>
+	<!--/#header--> 
+
+	<section class="container home-events" id="home-events">	
+		<div class="col-md-3" style="height: 100%;">
+		</div>
+		<div class="container row" style="width: auto">
+			<div class="col-md-6" style="text-align: center;padding-top: 20%;padding-bottom: 2%
+			;">
+			<h1 style="font-size: 60px;margin-bottom: 10%">Dramatics</h1>
+			<br>
+			<h2>Let your fingers seize with keys and your mind with screens.</h2>
+		</div>
+		<div class="col-md-12">
+			<a data-scroll href="#events">
+				<img src="images/arrow.png" class="img-responsive arrow" style="display: block;margin:0 auto;padding-bottom: 2%;
+				margin-top: 3%;">
+			</a>
+		</div>
+	</div>
+	<div class="col-md-3" style="height: 100%">
+	</div>
+</section>
+<!--/#home-->
+<div id="wait" style="display:none;width:69px;height:89px;border:0px solid black;position:absolute;top:40%;left:50%;padding:2px;"><img src='loaderimage.gif' width="64" height="64" /><br>Loading..</div>
+
+<section id="events" style="height: auto;background-position: center;
+background-attachment: fixed;background-repeat: repeat;">
+<div class="container" style="padding: 2%; width: 100%" id="data">
+
+
+</div>
+
+</section><!--/#Events-->
+<!-- Trigger the modal with a button -->
+
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="color:black">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="col-md-12 form-group" id="form" style="background-color: rgba(68, 25, 80, 0.9);color:white;padding: 5%">
+				<h1><span class="modal-title">Your Registration is successful!!</span></h1>
+				<h3><span class="modal-title">We have sent an Eticket on your email, you need to bring the ticket on the event side.</span></h3>
+				<h3><span class="modal-title">You need not to print the ticket, you can show us the softcopy.</span></h3>
+				<h3><span class="modal-title">Please check your email's spam folder, if you don't receive the email.</span></h3>
+
+				<button type="button"  style="background-color:#4858b1;color:white;margin-left:500px;" data-dismiss="modal" aria-label="Close">Ok</button>	
+			</div>	
+
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="color:black">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="col-md-12 form-group" id="form" style="background-color: rgba(68, 25, 80, 0.9);color:white;padding: 5%">
+				<h1><span class="modal-title">You Already Have been Registered!!</span></h1>
+				</div>
+		</div>
+		</div>
+		</div>
+
+
+
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="color:black">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+						<div class="col-md-12 form-group" id="form" style="background-color: rgba(68, 25, 80, 0.9);color:white;padding: 5%">
+						<div id="wait1" style="display:none;width:69px;height:89px;border:0px solid black;position:absolute;top:30%;left:50%;padding:2px;"><img src='loaderimage.gif' width="64" height="64" /><br>Fetching User Information...</div>
+						<div id="wait2" style="display:none;width:69px;height:89px;border:0px solid black;position:absolute;top:30%;left:50%;padding:2px;"><img src='loaderimage.gif' width="64" height="64" /><br>Registering...</div>
+						<div class="alert alert-warning" style="display:none;">
+  					<strong>Warning!</strong><span id="wr"> Indicates a warning that might need attention.</span>
+					</div>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ok();"><span aria-hidden="true" class="glyphicon glyphicon-remove" style="background-color: black;color:white"></span></button>
+						<h1><span class="modal-title">Register</span></h1>
+							
+							<div class="form-group">
+							<input name="eventid"  id="eventid" type="hidden" required="true" pattern="^\d{10}$" placeholder="eventid" class="form-control" style="width: 50%">
+							</div>
+							<div class="form-group">
+                  			<input type="hidden" class="form-control" placeholder="qr" name="qr" id="qr" />
+                			</div>
+							<div class="form-group">
+								<label for="Phone-number">Phone Number</label> 
+								<input type="text" class="form-control" placeholder="Phone No." name="phoneno" id="phoneno" onkeyup="testphone(this.value);" maxlength="10" style="width: 50%">
+						
+							</div>
+							<div class="form-group">
+								<label for="Name">Full Name</label>
+								<div class="line"></div>
+								<input type="text" class="form-control" placeholder="Full Name" name="fullname" id="fullname" style="width: 50%" required="true">
+							</div>
+							<div class="form-group">
+								<label for="Email">Email</label>
+								<input type="text" class="form-control" placeholder="Email" name="email" id="email" style="width: 50%">
+							</div>
+							<div class="form-group">
+								<label for="college">College</label>
+								<input type="text" class="form-control" placeholder="College" name="college" id="college" style="width: 50%" required="true">
+							</div>
+							<br>
+							<div class="form-group transaction" style="display: none">
+								<label for="Transaction">Transaction Id</label>
+								<input type="text" class="form-control" placeholder="Payment Transaction Id" name="paymenttxnid" id="paymenttxnid" style="width: 50%">
+								<br>
+							</div>
+							<div class="form-group transaction" style="display: none">
+								<label>Payment Phone No</label>
+								<input type="text" class="form-control" placeholder="Payment Phone No." name="paymentphoneno" id="paymentphoneno" style="width: 50%">
+								<br>
+							</div>
+							<button class="btn-primary btn-lg" id="submit-btn" style="background-color: #4858b1;
+							border: 0px solid red;transition: all .2s" onclick="create()">
+								Register
+							</button>
+							
+						</div>	
+		    </div>
+		  </div>
+
+				<button type="button"  style="background-color:#4858b1;color:white;margin-left:400px;" data-dismiss="modal" aria-label="Close" onclick="ok();">Cancel</button>	
+			</div>	
+
+
+
+
+
+<footer id="footer">
+	<div class="container">
+		<div class="text-center" style="margin-top: 20px;">
+			<p>Culmyca 2017<br><a target="_blank" href="#">YMCA University of Science and Technology</a></p>                
+
+		</div>
+	</div>
+</footer>
+<!--/#footer-->
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.6/SmoothScroll.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax.js"></script>
+<script type="text/javascript" src="js/coundown-timer.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+<script src="https://unpkg.com/scrollreveal@3.3.2/dist/scrollreveal.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/smooth-scroll.min.js"></script>
+<script>
+	$(document).ready(function(){
+		$(".courosal").css({"transform": "translateY(-800px)"});
+		$("html").css({"height":"100%"});
+		$(".navbar-header").css({"transform": "translateX(0px)"});
+		setTimeout(function() {
+			$(".navbar-right").css({"transform": "translateX(0px)"});},200);
+		setTimeout(function(){
+			$(".carousel-caption").css({"transform": "translateX(0px)"});},400);
+	});
+
+	$(window).resize(function() {
+		$(".bg > .ibg-bg").css({
+			width: $(window).outerWidth(),
+			height: $(window).outerHeight()
+		})
+	});
+
+	$(document).ready(function(){
+		$('.slider').slick({
+			slidesToShow: 4,
+			slidesToScroll: 3,
+			autoplay: true,
+			autoplaySpeed: 2000,
+			infinite: true,
+			responsive: [
+			{
+				breakpoint: 1024,
+				settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3,
+					infinite: true,
+					dots: true
+				}
+			},
+			{
+				breakpoint: 600,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+					autoplaySpeed: 1000,
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					autoplaySpeed: 1000,
+				}
+			}
+			]
+		});
+	});
+	window.sr = ScrollReveal();
+	sr.reveal('#explore',{origin: 'left', distance: '200px', viewFactor: '0.1'});
+	sr.reveal('#events',{origin: 'left', distance: '200px', viewFactor: '0.1'});
+	sr.reveal('#about',{origin: 'bottom', distance: '200px', viewFactor: '0.1'});
+	sr.reveal('#Widgets',{origin: 'top', distance: '200px', viewFactor: '0.1'});
+	smoothScroll.init({
+		easing: 'easeInOutCubic',
+		speed:1000
+	});
+	$('#myModal').on('show.bs.modal', function (event) {
+  	var button = $(event.relatedTarget) // Button that triggered the modal
+  	var recipient = button.data('whatever') // Extract info from data-* attributes
+  	// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  	// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  	var modal = $(this)
+  	modal.find('.modal-title').html('Register:- <br> Fill out this form')
+  	modal.find('.line').html(recipient)
+  });
+	$('.online-radio').focus(function() {
+		$('.transaction').css({"display":"initial"})
+	});
+	$('.offline-radio').focus(function() {
+		$('.transaction').css({"display":"none"})
+	})
+</script>
+</body>
+</html>

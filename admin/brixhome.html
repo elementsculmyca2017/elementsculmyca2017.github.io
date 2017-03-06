@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Elements Culmyca</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+   <meta content="himani kansal" name="author">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+
+   <style type="text/css">
+  td,th{
+    border: 1px solid black;
+  }
+  </style>
+
+  <script type="text/javascript">
+  function removeDuplicates(num) {
+  var x,
+      len=num.length,
+      out=[],
+      obj={};
+ 
+  for(x=0;x<len;x++) {
+    obj[num[x]]=0;
+  }
+  for (x in obj) {
+    out.push(x);
+  }
+  return out;
+}
+  var obj;
+  window.onload=function(){
+    $("#wait").css("display","block");
+   $("#eventl").hide();
+   $("#submit").hide();
+  if(localStorage.getItem("token") && localStorage.getItem("clubname")=='brix')  
+  {
+    document.getElementById("clubname").innerHTML=localStorage.getItem("clubname");
+
+    $.ajax({
+
+            type: "GET",
+            crossDomain: true,
+            dataType: 'json',
+            url: "https://elementsculmyca2017.herokuapp.com/api/v1/eventlist"
+    //success: function() { alert("Success"); },
+    //error: function() { alert('Failed!'); }
+
+        }).done(function(data){
+          $("#wait").css("display","none");
+          obj=JSON.parse(JSON.stringify(data));
+          var a=[];
+          for(var i=0; i<obj.length; i++)
+          {
+              a[i]=obj[i].club;
+          }
+          var clubn="";
+          b= removeDuplicates(a);
+          for(var i=0; i<b.length; i++)
+          {
+               clubn+='<option>' +b[i]+ '</option>';
+             
+            //document.getElementById("eventlist").innerHTML=obj[i].eventName;
+            //alert(obj[i].eventName);
+          }
+            $("#clubnamef").append(clubn);
+
+
+          //console.log(data);
+        })
+  }
+  else
+  {
+    window.location="index.html";
+  }
+  //alert(localStorage.getItem("token"));  
+  }
+
+    function ok()
+  {
+  
+//var clubname= $("#clubnamef").val();
+var eventlistname= $("#eventlist").val();
+$("#wait").css("display","block");
+
+ for(var i=0; i<obj.length; i++)
+          {
+              if(obj[i].eventName===eventlistname)
+              {
+                var eventid=obj[i]._id;
+                break;
+              }
+          }
+
+
+          $.ajax({
+
+            type: "GET",
+            crossDomain: true,
+            dataType: 'json',
+            url: "https://elementsculmyca2017.herokuapp.com/api/v1/registrations/"+localStorage.getItem('clubname')+"/"+eventid+"/"+localStorage.getItem('token')
+            //data: {username:username,password:password}
+    //success: function() { alert("Success"); },
+    //error: function() { alert('Failed!'); }
+
+        }).done(function(data){
+          $("#wait").css("display","none");
+        
+            var registrations=JSON.parse(JSON.stringify(data));
+            var reg="<h3>Showing Payment Status for event:-"+eventlistname+"</h3>";
+            reg+="<div class='box-body table-responsive no-padding' style='border:1px solid black'><table class='table table-hover'><tr><th>SNo.</th><th>Phone No.</th><th>Email</th><th>Fullname</th><th>College</th><th>paymenttxnid</th><th>paymentphoneno</th><th>arrived</th><th>qrcode</th><th>timestamp</th><th>Payment</th><th>Payment</th></tr>";
+          for(var i=0; i<registrations.length; i++)
+          {
+               reg+='<tr><td>'+(i+1)+'</td><td>'+registrations[i].phoneno+'</td><td>'+registrations[i].email+'</td><td>'+registrations[i].fullname+'</td><td>'+registrations[i].college+'</td><td>'+registrations[i].paymenttxnid+'</td><td>'+registrations[i].paymentphoneno+'</td><td>';
+               if(registrations[i].arrived==0)
+               reg+='No</td>';
+             else if(registrations[i].arrived==1)
+               reg+='Yes</td>';
+             reg+='<td>';
+             if(registrations[i].qrcode=='0')
+             reg+='<i class="icon fa fa-ban"></i></td><td>'+registrations[i].timestamp+'</td><td>';
+            if(registrations[i].qrcode!='0')
+             reg+=registrations[i].qrcode+'</td><td>'+registrations[i].timestamp+'</td><td>';
+                if(registrations[i].paymentstatus==0)
+             reg+='Not Received</td>';
+              if(registrations[i].paymentstatus==1)
+             reg+='Received</td>';
+                
+                if(registrations[i].paymentstatus==0)
+
+                  {
+                    reg+='<td><input type="hidden" class="form-control" placeholder="Event ID" name="event" id="event" value="'+registrations[i].eventid+'"><input type="hidden" class="form-control" placeholder="Phone No" name="phone" id="phone" value="'+registrations[i].phoneno+'"><input type="hidden" class="form-control" placeholder="Qr code" name="qr" id="qr" value="'+registrations[i]._id+'"><button type="button" class="btn btn-block btn-warning" onclick="approvepayment(\''+registrations[i]._id+'\',\''+registrations[i].phoneno+'\')">Pending</button></td></tr>';
+                  }
+               else if(registrations[i].paymentstatus==1)
+                  reg+='<td><button type="button" class="btn btn-block btn-success disabled">Success</button></td></tr>';
+
+            
+          }   
+          reg+="</table></div>";
+          document.getElementById("reg").innerHTML=reg;      
+
+          
+        })
+
+
+
+
+}
+
+ function getevents()
+  {
+  
+var clubname= $("#clubnamef").val();
+$("#wait").css("display","block");
+ $.ajax({
+
+            type: "GET",
+            crossDomain: true,
+            dataType: 'json',
+            url: "https://elementsculmyca2017.herokuapp.com/api/v1/eventlist/"+clubname
+    //success: function() { alert("Success"); },
+    //error: function() { alert('Failed!'); }
+
+        }).done(function(data){
+          $("#wait").css("display","none");
+          obj=JSON.parse(JSON.stringify(data));
+          var eventn="";
+          for(var i=0; i<obj.length; i++)
+          {
+               eventn+='<option>' + obj[i].eventName+ '</option>';
+             
+          }
+          $("#eventl").show();
+          $("#submit").show();
+           document.getElementById("eventlist").innerHTML=eventn;   
+
+        })
+  
+}
+
+function approvepayment(qrcode,phone)
+{//alert(qrcode);
+  //alert(phone);
+ var eventlistname= $("#eventlist").val();
+ for(var i=0; i<obj.length; i++)
+          {
+              if(obj[i].eventName===eventlistname)
+              {
+                var eventid=obj[i]._id;
+                break;
+              }
+          }
+
+  $.ajax({
+
+            type: "GET",
+            crossDomain: true,
+            dataType: 'json',
+            url: "https://elementsculmyca2017.herokuapp.com/api/v1/pay/"+phone+"/"+eventid+"/"+qrcode+"/"+
+            localStorage.getItem('token')
+            //data: {username:username,password:password}
+    //success: function() { alert("Success"); },
+    //error: function() { alert('Failed!'); }
+
+        }).done(function(data){
+           ok();   
+
+        })
+}
+ 
+  </script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="index.html" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>A</b>EC</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Admin</b>EC</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="dist/img/user2-160x160.png" class="user-image" alt="User Image">
+              <span class="hidden-xs">Elements Culmyca'17</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="dist/img/user2-160x160.png" class="img-circle" alt="User Image">
+
+                <p>
+                  Elements Culmyca'17
+                  <small></small>
+                </p>
+              </li>
+              <li class="user-footer">
+                <div class="pull-right">
+                  <a href="logout.html" class="btn btn-danger btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+
+           <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="hidden-xs">Developers</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="himani.jpg" class="img-circle" alt="User Image">
+                <p>
+                Himani Kansal
+                  <small></small>
+                </p>
+              </li>
+            </ul>
+          </li>
+          
+          
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="dist/img/user2-160x160.png" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>Element Culmyca'17</p>
+        </div>
+      </div>
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="header">MAIN NAVIGATION</li>
+        <li class="active treeview">
+          <a href="#">
+            <i class="fa fa-dashboard"></i> <span id="clubname"></span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="#"><i class="fa fa-circle-o"></i>Payment Approval</a></li>
+            <li><a href="counterreg.html"><i class="fa fa-circle-o"></i>Counter Registrations</a></li>
+            <li><a href="eventinfoupdate.html"><i class="fa fa-circle-o"></i>Update Event Info</a></li>
+             <li><a href="newevent.html"><i class="fa fa-circle-o"></i>Create New Event</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>Main Summary</a></li>
+          </ul>
+        </li>
+      
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Payment Approval
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Payment Approval</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+              <div class="row">
+                 <div class="col-md-12">
+                 <div class="form-group">
+                  <label>Select Club Name</label>
+                  <select class="form-control" name="clubnamef" id="clubnamef">
+                  </select>
+                </div>
+                </div><br /><br />
+               </div>
+               <button type="submit" class="btn btn-primary"  id="gevents" onclick="getevents()">Get Events</button>
+          
+              <div class="row" id="eventl">
+                 <div class="col-md-12">
+                 <div class="form-group">
+                  <label>Select Event</label>
+                  <select class="form-control" name="eventlist" id="eventlist">
+                  </select>
+                </div>
+                </div><br /><br />
+               </div>
+               
+                <button type="submit" class="btn btn-primary"  id="submit" onclick="ok()">Check Payments</button>
+
+        </section>
+        <div id="wait" style="display:none;width:69px;height:89px;border:0px solid black;position:absolute;top:30%;left:50%;padding:2px;"><img src='loaderimage.gif' width="64" height="64" /><br>Loading..</div>
+        <section id="reg">
+          
+
+        </section>
+        
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      
+    </div>
+    <strong>Copyright &copy; 2017 <a href="http://manan.tech/index.html">Manan</a>.</strong> All rights
+    reserved.
+  </footer>
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- jQuery 2.2.3 -->
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+<!-- Bootstrap 3.3.6 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+
+<script src="dist/js/app.min.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+</body>
+</html>

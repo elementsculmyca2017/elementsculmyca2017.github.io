@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Elements Culmyca</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta content="himani kansal" name="author">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+  <script type="text/javascript">
+  window.onload=function(){
+    $(".callout").hide();
+  }
+  function ok()
+  {$(".callout").hide();
+  
+var username= $("#username").val();
+var password = $("#password").val();
+ $("#wait").css("display","block");
+{ $.ajax({
+
+            type: "POST",
+            crossDomain: true,
+            dataType: 'json',
+            url: "https://elementsculmyca2017.herokuapp.com/api/v1/getAccessToken",
+            data: {username:username,password:password}
+    //success: function() { alert("Success"); },
+    //error: function() { alert('Failed!'); }
+
+        }).done(function(data){
+           $("#wait").css("display","none");
+            var obj=JSON.stringify(data);
+        
+          if(obj[2]=="m")
+          {
+                 $(".callout").show();
+            //alert("Invalid User name and password");
+          }
+          else if(obj[2]=="t")
+          { 
+            for(var i=15;;i++)
+            {
+              if(obj[i]==",")
+                break;
+            }
+            var tokenvalue=obj.substring(10,i-1);
+             var l=obj.length;
+            var clubname=obj.substring(i+15,l-2);
+    
+           localStorage.setItem("token",tokenvalue);
+           localStorage.setItem("clubname",clubname); 
+           if(clubname=="brix")
+            window.location="brixhome.html";
+          else
+          window.location="home.html";
+          // Retrieve 
+          //alert(localStorage.getItem("token")); 
+          }
+        
+        })
+}
+
+
+}
+
+</script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+  
+ <header class="main-header">
+    <!-- Logo -->
+    <a class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>A</b>EC</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Admin</b>EC</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              <img src="dist/img/user2-160x160.png" class="user-image" alt="User Image">
+              <span class="hidden-xs">Elements Culmyca'17</span>
+            </a>
+          </li>
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="hidden-xs">Developers</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="himani.jpg" class="img-circle" alt="User Image">
+                <p>
+                Himani Kansal
+                  <small></small>
+                </p>
+              </li>
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+    </nav>
+  </header>
+<!-- Content Wrapper. Contains page content -->
+  <div class="">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1 style="text-align:center;">
+      Website Management Panel
+        <small></small>
+      </h1><br />
+     
+    </section>
+     <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div class="callout callout-danger">
+          <h4>Warning!</h4>
+
+          <p>INVALID Username and password</p>
+        </div>
+        </div>
+        </div>
+ <!-- Main content -->
+ <div id="wait" style="display:none;width:69px;height:89px;border:0px solid black;position:absolute;top:70%;left:50%;padding:2px;"><img src='loaderimage.gif' width="64" height="64" /><br>Loading..</div>
+    <section class="content">
+      <div class="row">
+      <div class="col-md-2"></div>
+        <div class="col-md-8">
+     
+                
+                <div class="form-group">
+                  <label>Username</label>
+                  <input type="text" class="form-control" placeholder="Username" name="username" id="username">
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" class="form-control" placeholder="Password" name="password" id="password">
+                </div>        
+     <br />   
+            
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary"  id="submit" onclick="ok()">Submit</button>
+              </div>
+
+
+
+        </div>
+        <!-- /.col-->
+      </div>
+      <!-- ./row -->
+    </section>
+    <!-- /.content -->
+
+  </div>
+  <!-- /.content-wrapper -->
+
+   <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+     
+    </div>
+    <strong>Copyright &copy; 2017 <a href="http://manan.tech/index.html" target="_new">Manan</a>.</strong> All rights
+    reserved.
+  </footer>
+  <div class="control-sidebar-bg"></div>
+</div>
+
+
+<!-- jQuery 2.2.3 -->
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.6 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+
+<script src="dist/js/app.min.js"></script>
+<script src="dist/js/demo.js"></script>
+</body>
+</html>
+

@@ -203,7 +203,7 @@ function create()
 
 
 	var eventid=$('#eventid').val();
-  var letters = /^[a-zA-Z\s]*$/; 
+  var letters = /^(([a-zA-Z-\s](,)?)*)+$/; 
    if(fullname.match(letters))
    {
    		var fn="valid";
